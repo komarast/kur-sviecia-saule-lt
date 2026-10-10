@@ -1,0 +1,96 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Leaflet map styling fixes */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  z-index: 10;
+  font-family: inherit;
+}
+
+/* Tailwind preflight (img { max-width: 100%; height: auto }) breaks Leaflet tiles */
+.leaflet-container img,
+.leaflet-container .leaflet-tile,
+.leaflet-container .leaflet-marker-icon,
+.leaflet-container .leaflet-marker-shadow {
+  max-width: none !important;
+  max-height: none !important;
+}
+.custom-sun-marker {
+  background: transparent;
+  border: none;
+}
+
+/* Popup navigation buttons (override Leaflet's default blue link color) */
+.leaflet-container a.popup-btn,
+.leaflet-container a.popup-btn:visited {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff !important;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: filter 0.15s, transform 0.1s;
+}
+.leaflet-container a.popup-btn:hover {
+  filter: brightness(1.12);
+  color: #ffffff !important;
+}
+.leaflet-container a.popup-btn:active {
+  transform: scale(0.97);
+}
+.leaflet-container a.popup-btn-google {
+  background: #1a56db;
+}
+.leaflet-container a.popup-btn-waze {
+  background: #0891b2;
+}
+
+/* Custom pulsing animation for sunny marker */
+@keyframes sun-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  }
+  70% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 16px rgba(245, 158, 11, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+.animate-sun-pulse {
+  animation: sun-pulse 2.2s infinite ease-in-out;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7);
+}

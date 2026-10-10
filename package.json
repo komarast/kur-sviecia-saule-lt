@@ -1,0 +1,25 @@
+{
+  "name": "kur-sviecia-saule-lt",
+  "version": "1.0.0",
+  "description": "Where is it sunny in Lithuania - Interactive live weather & sunshine map",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"blue,yellow\" \"npm run dev:server\" \"npm run dev:client\"",
+    "build:server": "npm --prefix server run build",
+    "build:client": "npm --prefix client run build",
+    "build": "npm run build:server && npm run build:client",
+    "lint": "npm --prefix client run lint",
+    "test": "npm --prefix server test",
+    "check": "npm run lint && npm run test && npm run build",
+    "start": "npm --prefix server run start"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
