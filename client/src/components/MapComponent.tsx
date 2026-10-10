@@ -6,13 +6,16 @@ import { getT } from '../translations';
 import { formatVilniusTime } from '../utils/time';
 import { Navigation, ExternalLink, Copy, Check, Wind, Cloud, Compass } from 'lucide-react';
 
-// Tile source is configurable. The default is OpenStreetMap's public server, which is fine for light
-// traffic; for heavy public use set VITE_TILE_URL (and VITE_TILE_ATTRIBUTION) to a keyed provider.
-const TILE_URL: string =
-  import.meta.env.VITE_TILE_URL || 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+// Tile source defaults to CARTO Voyager (OpenStreetMap-based tiles hosted on global CDN)
+// which avoids OSM's strict Referer/User-Agent blocks and rate-limiting on cloud hosts like Render.
+const DEFAULT_TILE_URL =
+  'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+const DEFAULT_TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noreferrer">CARTO</a>';
+
+const TILE_URL: string = import.meta.env.VITE_TILE_URL || DEFAULT_TILE_URL;
 const TILE_ATTRIBUTION: string =
-  import.meta.env.VITE_TILE_ATTRIBUTION ||
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+  import.meta.env.VITE_TILE_ATTRIBUTION || DEFAULT_TILE_ATTRIBUTION;
 
 interface MapComponentProps {
   stations: StationObservation[];
@@ -175,7 +178,12 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         scrollWheelZoom={true}
         className="w-full h-full z-0 bg-slate-950"
       >
-        <TileLayer attribution={TILE_ATTRIBUTION} url={TILE_URL} maxZoom={19} />
+        <TileLayer
+          attribution={TILE_ATTRIBUTION}
+          url={TILE_URL}
+          subdomains={TILE_URL.includes('{s}') ? 'abcd' : 'abc'}
+          maxZoom={19}
+        />
 
         <FlyToLocation coords={selectedLocation} />
 

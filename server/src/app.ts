@@ -46,6 +46,9 @@ export function createApp(options: AppOptions): Express {
 
   app.use(
     helmet({
+      referrerPolicy: {
+        policy: 'strict-origin-when-cross-origin'
+      },
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
@@ -53,7 +56,16 @@ export function createApp(options: AppOptions): Express {
           'script-src': ["'self'"],
           'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
           'font-src': ["'self'", 'https://fonts.gstatic.com'],
-          'img-src': ["'self'", 'data:', 'https://tile.openstreetmap.org', 'https://*.tile.openstreetmap.org'],
+          'img-src': [
+            "'self'",
+            'data:',
+            'blob:',
+            'https://tile.openstreetmap.org',
+            'https://*.tile.openstreetmap.org',
+            'https://*.tile.openstreetmap.fr',
+            'https://*.basemaps.cartocdn.com',
+            'https://basemaps.cartocdn.com'
+          ],
           'connect-src': ["'self'"],
           'frame-ancestors': ["'none'"]
         }
