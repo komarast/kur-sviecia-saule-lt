@@ -6,12 +6,11 @@ import { getT } from '../translations';
 import { formatVilniusTime } from '../utils/time';
 import { Navigation, ExternalLink, Copy, Check, Wind, Cloud, Compass } from 'lucide-react';
 
-// Tile source defaults to CARTO Voyager (OpenStreetMap-based tiles hosted on global CDN)
-// which avoids OSM's strict Referer/User-Agent blocks and rate-limiting on cloud hosts like Render.
-const DEFAULT_TILE_URL =
-  'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+// OpenStreetMap standard tile server (100% free, no API key required).
+// Works because Referrer-Policy is now set to 'strict-origin-when-cross-origin'.
+const DEFAULT_TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const DEFAULT_TILE_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noreferrer">CARTO</a>';
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors';
 
 const TILE_URL: string = import.meta.env.VITE_TILE_URL || DEFAULT_TILE_URL;
 const TILE_ATTRIBUTION: string =
